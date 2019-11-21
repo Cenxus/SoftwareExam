@@ -26,6 +26,9 @@ namespace exam_2
                 customer.Stop();
             }
             _store.Stop();
+
+            Console.WriteLine("\n\nPress any key to exit.");
+            Console.ReadKey();
             /*
             clothingFactory factory = null;
             Console.Write("Enter your clothing type: ");
