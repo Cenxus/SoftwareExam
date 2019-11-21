@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace exam_2
 {
@@ -7,16 +9,23 @@ namespace exam_2
         
         static void Main()
         {
-            Employee _store = new Employee("Per", 01);
-            Customer _customer1 = new Customer("Pål", 02, 500);
+            Employee _store = new Employee("Store", 01);
+            List<Customer> _customers = new List<Customer>() {new Customer("Pål", 02), new Customer("Per", 03), new Customer("Espen", 03), };
             InventorySingleton inventory = InventorySingleton.GetInventorySingleton();
-            _store.AddWare("pants", 99.99, 'm');
-            _store.AddWare("pants", 199.99, 'l');
-            _store.AddWare("pants", 99.99, 's');
-            _customer1.Buy("pants");
 
+            _store.Start();
+            foreach(var customer in _customers)
+            {
+                customer.Start();
+            }
 
+            Thread.Sleep(3000);
 
+            foreach (var customer in _customers)
+            {
+                customer.Stop();
+            }
+            _store.Stop();
             /*
             clothingFactory factory = null;
             Console.Write("Enter your clothing type: ");

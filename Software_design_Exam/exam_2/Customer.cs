@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace exam_2
 {
@@ -8,13 +7,12 @@ namespace exam_2
     {
         private string _name;
         private readonly int _ID;
-        private double _money;
+        private readonly object _lock = new object();
 
-        public Customer(string name, int ID, double money)
+        public Customer(string name, int ID)
         {
             _name = name;
             _ID = ID;
-            _money = money;
         }
 
         public override string name
@@ -28,24 +26,42 @@ namespace exam_2
             get { return _ID; }
         }
 
-        public double money
+
+        protected override void Task()
         {
-            get { return _money; }
-            set { _money = value; }
+            while(_running)
+            {
+                Browse();
+            }
         }
 
-        public void Buy(string clothingType)
+        public void Browse()
         {
-            InventorySingleton inventory = InventorySingleton.GetInventorySingleton();
-            List<clothes> wares = inventory.ClothesList(clothingType);
-            for (int i = 0; i < wares.Count; i++)
+            lock (_lock)
             {
-                if (wares[i].price < _money)
+                InventorySingleton inventory = InventorySingleton.GetInventorySingleton();
+                bool bought = false;
+                Random random = new Random();
+                var list = new List<string> { "pants", "sweater", "socks" };
+                int index = random.Next(list.Count);
+                while (bought != true)
                 {
-                    _money = money - wares[i].price;
-                    Console.WriteLine(name + " bought " + wares[i].clothingType.ToLower() + " " + inventory.ClothesList(clothingType).Count + " from the store.");
-                    inventory.RemoveFromInventory(clothingType, i);
-                    
+                    List<clothes> wares = inventory.ClothesList(list[index]);
+                    for (int i = 0; i < wares.Count; i++)
+                    {
+                        int randomNumber = random.Next(0, 12);
+                        if (randomNumber == 10)
+                        {
+
+                            Console.WriteLine(name + " bought a size " + wares[i].size + " " + wares[i].clothingType + " for " + wares[i].price + ".");
+                            inventory.RemoveFromInventory(list[index], i);
+                            bought = true;
+                        }
+                        else if (i == wares.Count - 1)
+                        {
+                            i = 0;
+                        }
+                    }
                 }
             }
         }
