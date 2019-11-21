@@ -36,14 +36,17 @@ namespace exam_2
                 case "pants":
                     factory = new pantsFactory(price, size);
                     inventory.AddToInventory(factory.GetClothes());
+                    Console.WriteLine(name+" added new " + clothingType +" " + inventory.ClothesList(clothingType).Count + " for sale." );
                     break;
                 case "sweater":
                     factory = new sweaterFactory(price, size);
                     inventory.AddToInventory(factory.GetClothes());
+                    Console.WriteLine(name + " added new " + clothingType + " " + inventory.ClothesList(clothingType).Count + " for sale.");
                     break;
                 case "socks":
                     factory = new socksFactory(price, size);
                     inventory.AddToInventory(factory.GetClothes());
+                    Console.WriteLine(name + " added new " + clothingType + " " + inventory.ClothesList(clothingType).Count + " for sale.");
                     break;
                 default:
                     Console.WriteLine("Nothing found");

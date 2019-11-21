@@ -43,7 +43,9 @@ namespace exam_2
                 if (wares[i].price < _money)
                 {
                     _money = money - wares[i].price;
+                    Console.WriteLine(name + " bought " + wares[i].clothingType.ToLower() + " " + inventory.ClothesList(clothingType).Count + " from the store.");
                     inventory.RemoveFromInventory(clothingType, i);
+                    
                 }
             }
         }
